@@ -34,9 +34,11 @@ class Column:
             buttonFloor += 1
 
     def createElevators(self, _amountOfFloors, _amountOfElevators):
+        global elevatorID
         for eachElevator in range(_amountOfElevators):
             elevator = Elevator(elevatorID, _amountOfFloors)
             self.elevatorList.append(elevator)
+            elevatorID += 1
 
     def requestElevator(self, floor, direction):
         bestElevator = self.findElevator(floor, direction)
@@ -132,27 +134,23 @@ class Elevator:
         self.operateDoors()
 
     def move(self):
-        numberOfRequest = len(self.floorRequestList)
-        while numberOfRequest > 0:
+        while len(self.floorRequestList) > 0:
             destination = self.floorRequestList[0]
             self.status = "moving"
             if self.currentFloor < destination:
                 self.direction = "up"
-                self.sortFloorList()
                 while self.currentFloor < destination:
                     self.currentFloor += 1
                     self.screenDisplay = self.currentFloor
 
             elif self.currentFloor > destination:
                 self.status = "down"
-                self.sortFloorList()
                 while self.currentFloor > destination:
                     self.currentFloor -= 1
                     self.screenDisplay = self.currentFloor
 
             self.status = "stopped"
-            self.floorRequestList.pop(0)
-            numberOfRequest -= 1
+            self.floorRequestList.pop()
 
         self.status = "idle"
 
