@@ -1,34 +1,36 @@
 # Rocket-Elevators-Python-Controller
-This is the template to use for the python residential controller. You will find the classes that should be used along with some methods described in the requirements. The necessary file to run some tests is also included. 
+This project is about implementing an elevator controller . The program is based on pseudocode file given and for this version written in python. 
 
-### Installation
 
-First, depending on your python version, make sure to install the Package Installer for Python (PIP) if needed:
+### Usage 
+To run the script with python run the command
+`python3 residential_controller.py`
 
-https://pip.pypa.io/en/stable/installing/
-
-Next, install Pytest:
-
-https://docs.pytest.org/en/6.2.x/getting-started.html
-
-### Running the tests
-
-To launch the tests:
-
+To run test with pytest run the command
 `pytest`
 
-With a fully completed project, you should get an output like:
+More test can be uncomment at the bottom of the file
 
-![Screenshot from 2021-06-15 13-13-13](https://user-images.githubusercontent.com/28630658/122095645-a41fa000-cddb-11eb-9322-81a766cce4bb.png)
+```
+# testColumn = Column(1, 10, 2)
+# print(testColumn)
+# testColumn.findElevator(1, 3)
 
-You can also get more details about each test by adding the `-v` flag: 
+# testElevator = Elevator(1, 10)
+# testElevator.requestFloor(8)
+# print(testElevator)
+# testCallButton = CallButton(1,10,"up")
+# testCallButton.printCallButton()
+# testRequestButton = FloorRequestButton(1,10)
+# testRequestButton.printFloorRequestButton()
+# testDoor = Door(1,"close")
+# testDoor.printDoor()
+```
+### Description
+This program creates a number of columns and elevators as needed and supports the needs of elevator request button and floor access request button with a system-based efficiency management  point allowing to evaluate the best choice taking into account the floor where the request was initiated versus the availability and the direction of the cage. This system thus makes it possible to efficiently sort requests and return a lift in a short time.
 
-`pytest -v` 
+#### Dependencies
 
-which should give something like: 
-
-![Screenshot from 2021-06-15 13-13-33](https://user-images.githubusercontent.com/28630658/122095759-c74a4f80-cddb-11eb-999d-dfe35dbe7d18.png)
-
-The test file can be left in your final project but no scenarios should be present in your code. The grader will run tests similar to the ones provided.
-
-Of course, make sure to edit this Readme file to describe your own project!
+`Python`
+`pip`
+`pytest`
