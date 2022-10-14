@@ -18,6 +18,58 @@ class Column:
         # self.createCallButtons(_amountOfFloors)
         # self.createElevators(_amountOfFloors,_amountOfElevators)
 
+
+    def findElevator(self,requestedFloor,requestedDirection):
+        bestElevator = dict()
+        self.bestElevatorInformations = dict(bestElevator= self.elevator, bestScore= 5, referenceGap= 10000000)
+
+        for elevator in self.elevatorList:
+
+            if requestedFloor == elevator.currentFloor and elevator.status == "stopped" and requestedDirection == elevator.direction:
+                self.bestElevatorInformations = self.checkIfElevatorIsBetter(1,elevator,self.bestElevatorInformations["bestScore"],self.bestElevatorInformations["referenceGap"],self.bestElevatorInformations["bestElevator"],requestedFloor)
+
+                return self.bestElevatorInformations
+
+            elif requestedFloor > elevator.currentFloor and elevator.direction == "up" and requestedDirection == elevator.direction:
+
+                self.bestElevatorInformations = self.checkIfElevatorIsBetter(2,elevator,self.bestElevatorInformations["bestScore"],self.bestElevatorInformations["referenceGap"],self.bestElevatorInformations["bestElevator"],requestedFloor)
+                return self.bestElevatorInformations
+
+            elif requestedFloor < elevator.currentFloor and elevator.direction == "down" and requestedDirection == elevator.direction:
+
+                self.bestElevatorInformations = self.checkIfElevatorIsBetter(2,elevator,self.bestElevatorInformations["bestScore"],self.bestElevatorInformations["referenceGap"],self.bestElevatorInformations["bestElevator"],requestedFloor)
+                return self.bestElevatorInformations
+
+            elif elevator.status == "idle":
+
+                self.bestElevatorInformations = self.checkIfElevatorIsBetter(3,elevator,self.bestElevatorInformations["bestScore"],self.bestElevatorInformations["referenceGap"],self.bestElevatorInformations["bestElevator"],requestedFloor)
+                return self.bestElevatorInformations
+
+            else:
+                self.bestElevatorInformations = self.checkIfElevatorIsBetter(4,elevator,self.bestElevatorInformations["bestScore"],self.bestElevatorInformations["referenceGap"],self.bestElevatorInformations["bestElevator"],requestedFloor)
+                return self.bestElevatorInformations
+        bestElevator = self.bestElevatorInformations["bestElevator"]        
+        return bestElevator
+
+
+
+    def checkIfElevatorIsBetter(self,scoreToCheck,newElevator,bestScore,referenceGap,bestElevator,requestedFloor):
+        if scoreToCheck < bestScore:
+            bestScore = scoreToCheck
+            bestElevator = newElevator
+            referenceGap = abs(newElevator.currentFloor - requestedFloor)
+        elif bestScore == scoreToCheck:
+            gap = abs(newElevator.currentFloor - requestedFloor)
+            if referenceGap > gap:
+                bestElevator = newElevator
+                referenceGap = gap
+        
+        self.bestElevatorInformations["bestElevator"] = bestElevator
+        self.bestElevatorInformations["bestScore"] = bestScore
+        self.bestElevatorInformations["referenceGap"] = referenceGap
+        return self.bestElevatorInformations   
+
+
     def __str__(self):
         return f"Column id: {self.ID} Column status {self.status} Column elevator list {self.elevatorList[0]}, {self.elevatorList[-1]}  Column call button list {self.callButtonList[0]}, {self.callButtonList[-1]}"
         
@@ -32,6 +84,7 @@ class Elevator:
             self.door = Door(_id,"closed")
             self.floorRequestButtonList = [2,4]
             self.floorRequestList = [7,2,10]
+
             self.createFloorRequestButtons(_amountOfFloors)
            
     def createFloorRequestButtons(self,_amountOfFloors):
